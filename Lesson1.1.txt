@@ -1,0 +1,98 @@
+Lesson 1.1: Intro to S3
+
+Practice 1.1
+Lab 1.1.1: Create a Bucket
+--------------------------------------
+
+A bucket was created and content was listed using following command - 
+
+$ aws s3 mb s3://izaan-wali1317
+make_bucket: izaan-wali1317
+
+$ aws s3 ls s3://izaan-wali1317
+
+
+Lab 1.1.2: Upload Objects to a Bucket
+---------------------------------------------------
+
+A local subdirectory "data" created uder drive D/Devops2201
+
+$ mkdir data
+
+And test1.txt, test2.txt files created under subfolder data.
+To copy test1.txt and test2.txt following command executed
+
+$ aws s3 cp test1.txt s3://izaan-wali1317
+upload: .\test1.txt to s3://izaan-wali1317/test1.txt
+
+$ aws s3 ls s3://izaan-wali1317
+2022-04-01 20:13:48          0 test1.txt
+
+$ aws s3 sync . s3://izaan-wali1317
+upload: .\test2.txt to s3://izaan-wali1317/test2.txt
+
+$ aws s3 ls s3://izaan-wali1317
+2022-04-01 20:13:48          0 test1.txt
+2022-04-01 20:16:19          0 test2.txt
+
+Question: 
+-------------
+How would you copy the contents of the directory to the top level of your bucket?
+
+Ans: Using "cp" command
+
+How would you copy the contents and include the directory name in the s3 object
+paths?
+
+Ans: Using "sync" command
+
+Can anyone else see your file yet?
+
+Ans: No
+
+What makes "sync" a better choice than "cp" for some S3 uploads?
+
+sync copies whole files/directory only the first time. 
+Next time when you use sync command with the same files/directory, 
+only new changes are copied to the destination folder.
+Where as, using cp command everytime source files are copied to destination bucket/folder.
+
+
+Lab 1.1.3: Exclude Private Objects When Uploading to a Bucket
+------------------------------------------------------------------------------------
+
+A private file along with test3.txt were added to the data directory:
+
+$ touch private.txt test3.txt
+
+Then,  I upload the directory to my bucket again without including the private file
+
+$ aws s3 sync . s3://izaan-wali1317 --exclude "private.txt"
+upload: .\test3.txt to s3://izaan-wali1317/test3.txt
+
+Then, it was checked, but private.txt file was not in the bucket
+
+$ aws s3 ls s3://izaan-wali1317
+2022-04-01 20:13:48          0 test1.txt    
+2022-04-01 20:16:19          0 test2.txt
+2022-04-01 20:44:48          0 test3.txt
+
+Lab 1.1.4: Clean Up
+---------------------------
+
+Clean up: remove your bucket. What do you have to do before you can
+remove it?
+
+I we want to delete the bucket with the following command we have to delete all the objects and prefixes 
+from the bucket:
+
+$ aws s3 rb s3://izaan-wali1317
+
+otherwise we have to execute following command
+
+$ aws s3 rb s3://izaan-wali1317 --force
+
+
+
+
+
