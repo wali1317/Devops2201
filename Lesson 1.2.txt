@@ -1,0 +1,47 @@
+Practice 1.2
+
+Lab 1.2.1: Recreate the Bucket with Public Data
+------------------------------------------------
+The contents of data directory along with private.txt was uploaded using sync command. Along with the object of
+bucket made publicly readable by executing following command:
+
+$ aws s3 sync .  s3://izaan-wali1317 --acl public-read
+
+Then it was verified whether it is publicly available or not by the following command:
+
+$ curl https://izaan-wali1317.s3.amazonaws.com/test1.txt
+WALI UR RASHID
+
+Question: After this, can you download one of your files from the bucket without using
+your API credentials?
+
+Ans: Yes, we can download file without API credential.
+
+Lab 1.2.2: Use the CLI to Restrict Access to Private Data
+----------------------------------------------------------
+
+"private.txt" file was made protected using following command:
+
+$ aws s3 cp private.txt s3://izaan-wali1317 --acl private
+
+Question: How could you use "aws s3 cp" or "aws s3 sync" command to modify the
+permissions on the file?
+
+Ans: To modify this sort of permissions we have to use "aws s3 cp"
+
+Question: Is there a way you can change the permissions on the file without re-uploading?
+
+Ans: Yes, we can change the permission in the file without re-uploading by fillowing command:
+
+$ aws s3api put-object-acl --bucket izaan-wali1317 --key private.txt --acl public-read
+
+Lab 1.2.3: Using the API from the CLI
+--------------------------------------
+
+Created a Bucket using s3api
+
+$ aws s3api create-bucket --bucket izaan-wali1318
+
+Then created a json file named policy.json for the required permission and executed the following command:
+
+$ aws s3api put-bucket-policy --bucket izaan-wali1318 --policy file://policy.json
